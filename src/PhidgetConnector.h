@@ -1,5 +1,4 @@
-//  PhidgetModel.h
-//  PhidgetTest
+//  PhidgetConnector.h
 //
 // Created by Cameron Browning on 6/20/12.
 // draws heavily from Patrick from this thread: http://www.phidgets.com/phorum/viewtopic.php?f=37&t=3472

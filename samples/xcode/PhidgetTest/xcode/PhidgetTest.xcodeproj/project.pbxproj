@@ -35,9 +35,9 @@
 		13E42FB307B3F0F600E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
-		3262FA4D15923993002C2529 /* PhidgetModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PhidgetModel.h; path = ../samples/xcode/PhidgetTest/xcode/PhidgetModel.h; sourceTree = "<group>"; };
+		324E031E1598F4290001251C /* PhidgetModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhidgetModel.h; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* PhidgetTest_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhidgetTest_Prefix.pch; sourceTree = "<group>"; };
-		32F24BF51588F69E0071B3C6 /* PhidgetConnector.h */ = {isa = PBXFileReference; fileEncoding = 4; path = PhidgetConnector.h; sourceTree = "<group>"; };
+		32F24BF51588F69E0071B3C6 /* PhidgetConnector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhidgetConnector.h; sourceTree = "<group>"; };
 		32F24BF81588F6A60071B3C6 /* phidget21.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = phidget21.h; sourceTree = "<group>"; };
 		32F24BF91588F7F60071B3C6 /* Phidget21.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Phidget21.framework; path = ../../../../lib/macosx/Phidget21.framework; sourceTree = "<group>"; };
 		5323E6B10EAFCA74003A9687 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = /System/Library/Frameworks/CoreVideo.framework; sourceTree = "<absolute>"; };
@@ -172,7 +172,7 @@
 		32F24BF31588F69E0071B3C6 /* src */ = {
 			isa = PBXGroup;
 			children = (
-				3262FA4D15923993002C2529 /* PhidgetModel.h */,
+				324E031E1598F4290001251C /* PhidgetModel.h */,
 				32F24BF51588F69E0071B3C6 /* PhidgetConnector.h */,
 			);
 			name = src;

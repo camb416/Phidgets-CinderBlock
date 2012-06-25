@@ -1,6 +1,4 @@
-//
 //  PhidgetModel.h
-//  PhidgetTest
 //
 // Created by Cameron Browning on 6/20/12.
 // Copyright (c) 2012 Cameron Browning
