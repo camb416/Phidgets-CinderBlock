@@ -46,6 +46,7 @@ int IFKitModel::getSensorVal(int whichSensor){
     if(whichSensor>-1 && whichSensor<numSensors) {
         return sensors[whichSensor];
     } else {
+        cinder::app::console() << "WARNING: It seems you're looking for a sensor that is out of range for the selected device: (" << serial <<  " , " << whichSensor << ")." << endl;
         return -1;
     }
     

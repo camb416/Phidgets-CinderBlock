@@ -45,6 +45,9 @@ public:
     void updateKits();
     void reset();
     bool useEvents(bool bUseEvents_in);
+    
+    bool bHasUpdatedAtLeastOnce;
+    
     PhidgetConnector();
     ~PhidgetConnector();
     
@@ -59,6 +62,7 @@ private:
 // constructor
 PhidgetConnector::PhidgetConnector(){
     bUseEvents = true;
+    bHasUpdatedAtLeastOnce = false;
 }
 
 // destructor
@@ -106,10 +110,14 @@ bool PhidgetConnector::useEvents(bool bUseEvents_in){
 
 // return a given sensor value as an int
 int PhidgetConnector::getVal(int serial_in,int index_in){
+   
+    if(!bUseEvents && !bHasUpdatedAtLeastOnce) cinder::app::console() << "WARNING: You are using the Phidgets Connector without events, but are calling getVal(int,int) without updating the values beforehand. You'll get -1 or false every time." << endl;
+    
     IFKitModel * theKit = getIFKit(serial_in);
     if(theKit != NULL){
         return theKit->getSensorVal(index_in);
     } else {
+        cinder::app::console() << "WARNING: It seems you're looking for a device that was never connected to successfully." << endl;
         return -1;
     }
     
@@ -149,6 +157,10 @@ void PhidgetConnector::print(int serial_in){
 
 // this updates all the kit models without relying on the sensorchanged event callbacks.
 void PhidgetConnector::updateKits(){
+    
+    //
+    bHasUpdatedAtLeastOnce = true;
+    
     // updating the kits manually through the API.
     for(int j=0;j<ifkits.size();j++){
         int serialNo;
@@ -192,13 +204,18 @@ void PhidgetConnector::connect(int serial_in){
    
     if(bUseEvents){   
         cout << "using events..." << endl;
+       
         CPhidget_set_OnError_Handler((CPhidgetHandle)*thisIFKIT, ErrorHandler, this);
         CPhidgetInterfaceKit_set_OnSensorChange_Handler(*thisIFKIT, SensorChangeHandler, this);
     } else {
          cout << "not using events..." << endl;
     }
+    try{
     CPhidget_open((CPhidgetHandle)*thisIFKIT, serial_in);
-        printf("Waiting for interface kit to be attached....");
+    } catch(int err){
+        cout << "there was an error opening the phidget! shit... " << err << endl;
+    }
+    printf("Waiting for interface kit to be attached....");
         int result;
         const char *err;
         if((result = CPhidget_waitForAttachment((CPhidgetHandle)*thisIFKIT, 30000))){
