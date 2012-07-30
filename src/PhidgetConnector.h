@@ -15,6 +15,8 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // IN THE SOFTWARE.
 
+#ifndef _PHIDGET_CINDER_BLOCK
+#define _PHIDGET_CINDER_BLOCK
 
 
 #include "phidget21.h"
@@ -294,3 +296,4 @@ int PhidgetConnector::display_properties(CPhidgetInterfaceKitHandle phid){
     
 	return 0;
 }
+#endif

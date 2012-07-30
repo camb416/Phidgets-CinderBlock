@@ -16,8 +16,8 @@
 // 
 // 
 
-#ifndef PhidgetTest_PhidgetModel_h
-#define PhidgetTest_PhidgetModel_h
+#ifndef PhidgetModel_h
+#define PhidgetModel_h
 
 #include <iostream>
 using namespace std;
