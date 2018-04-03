@@ -2,11 +2,17 @@
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
 
+#define CI_MIN_LOG_LEVEL 0
+#include "cinder/Log.h"
+
 #include "poPhidgets/PhidgetVoltageRatioInput.h"
+
 
 using namespace ci;
 using namespace ci::app;
 using namespace std;
+
+
 
 class BasicVoltageRatioApp : public App
 {

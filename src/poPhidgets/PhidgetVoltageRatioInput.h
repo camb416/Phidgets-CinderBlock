@@ -32,7 +32,14 @@ namespace po
 				PhidgetVoltageRatioInputHandle mHandle;
 
 				static int createVoltageRatioInput( PhidgetVoltageRatioInputHandle* pvrih );
-		};
 
+				static void CCONV onAttachHandler( PhidgetHandle ph, void* ctx );
+				static void CCONV onDetachHandler( PhidgetHandle ph, void* ctx );
+				static void CCONV onErrorHandler( PhidgetHandle phid, void* ctx, Phidget_ErrorEventCode errorCode, const char* errorString );
+				int SetAttachDetachError_Handlers( PhidgetHandle ch );
+				static void CCONV onVoltageRatioChangeHandler( PhidgetVoltageRatioInputHandle pvrih, void* ctx, double ratio );
+				static int CreateVoltageRatioInput( PhidgetVoltageRatioInputHandle* pvrih );
+				static int SetVoltageRatioHandler( PhidgetVoltageRatioInputHandle pvrih, PhidgetVoltageRatioInput_OnVoltageRatioChangeCallback fptr );
+		};
 	}
 }
