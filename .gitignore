@@ -30,5 +30,5 @@ build/
 *.db
 *.aps
 .vs/
-x64/
+**/vc2015/x64/
 DerivedData
