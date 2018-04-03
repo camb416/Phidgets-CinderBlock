@@ -35,7 +35,7 @@ namespace po
 				int setSerialNumber( PhidgetHandle ph, int deviceSerialNumber = -1 );
 				int setChannel( PhidgetHandle ph, int channel = 0 );
 				int setAttachDetachError_Handlers( PhidgetHandle ch );
-				//int setVoltageRatioChangeHandler( PhidgetVoltageRatioInputHandle pvrih );
+				int openPhidgetChannelWithTimeout( PhidgetHandle ch, int timeout = 5000 );
 
 				static void CCONV onAttachHandler( PhidgetHandle ph, void* ctx );
 				static void CCONV onDetachHandler( PhidgetHandle ph, void* ctx );

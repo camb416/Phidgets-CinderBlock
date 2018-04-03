@@ -21,6 +21,7 @@ class BasicVoltageRatioApp : public App
 		void mouseDown( MouseEvent event ) override;
 		void update() override;
 		void draw() override;
+		void keyDown( KeyEvent event ) override;
 
 		po::phidget::VoltageRatioInputRef mInput;
 };
@@ -32,6 +33,13 @@ void BasicVoltageRatioApp::setup()
 
 void BasicVoltageRatioApp::mouseDown( MouseEvent event )
 {
+}
+
+void BasicVoltageRatioApp::keyDown( KeyEvent event )
+{
+	if( event.getChar() == 'q' || event.getChar() == 'Q' ) {
+		quit();
+	}
 }
 
 void BasicVoltageRatioApp::update()

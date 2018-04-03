@@ -34,7 +34,7 @@ namespace po
 				return;
 			}
 
-			if( setChannel( PhidgetHandle( mHandle ) ) ) {
+			if( setChannel( PhidgetHandle( mHandle ), 5 ) ) {
 				return;
 			}
 
@@ -43,6 +43,10 @@ namespace po
 			}
 
 			if( setVoltageRatioHandler( mHandle, onVoltageRatioChangeHandler ) ) {
+				return;
+			}
+
+			if( openPhidgetChannelWithTimeout( PhidgetHandle( mHandle ), 5000 ) ) {
 				return;
 			}
 		}
@@ -109,29 +113,45 @@ namespace po
 		int VoltageRatioInput::setAttachDetachError_Handlers( PhidgetHandle ch )
 		{
 			PhidgetReturnCode prc;
-			CI_LOG_V( "Setting OnAttachHandler...\n" );
+			CI_LOG_V( "Setting OnAttachHandler..." );
 			prc = Phidget_setOnAttachHandler( ch, onAttachHandler, NULL );
 
 			if( EPHIDGET_OK != prc ) {
-				CI_LOG_E( "Runtime Error -> Set Attach Handler: \n\t" );
+				CI_LOG_E( "Runtime Error -> Set Attach Handler" );
 				DisplayError( prc );
 				return 1;
 			}
 
-			CI_LOG_V( "Setting OnDetachHandler...\n" );
+			CI_LOG_V( "Setting OnDetachHandler..." );
 			prc = Phidget_setOnDetachHandler( ch, onDetachHandler, NULL );
 
 			if( EPHIDGET_OK != prc ) {
-				CI_LOG_E( "Runtime Error -> Set Detach Handler: \n\t" );
+				CI_LOG_E( "Runtime Error -> Set Detach Handler" );
 				DisplayError( prc );
 				return 1;
 			}
 
-			CI_LOG_V( "Setting OnErrorHandler...\n" );
+			CI_LOG_V( "Setting OnErrorHandler..." );
 			prc = Phidget_setOnErrorHandler( ch, onErrorHandler, NULL );
 
 			if( EPHIDGET_OK != prc ) {
-				CI_LOG_E( "Runtime Error -> Set Error Handler: \n\t" );
+				CI_LOG_E( "Runtime Error -> Set Error Handler" );
+				DisplayError( prc );
+				return 1;
+			}
+
+			return 0;
+		}
+
+		int VoltageRatioInput::openPhidgetChannelWithTimeout( PhidgetHandle ch, int timeout )
+		{
+			PhidgetReturnCode prc;
+
+			CI_LOG_V( "Opening Channel..." );
+			prc = Phidget_openWaitForAttachment( ch, timeout );
+
+			if( prc != EPHIDGET_OK ) {
+				CI_LOG_E( "Runtime Error -> Opening Phidget Channel" );
 				DisplayError( prc );
 				return 1;
 			}
@@ -231,10 +251,10 @@ namespace po
 					return;
 				}
 
-				CI_LOG_V( "\n[Attach Event]:\n\t-> Serial Number: %d\n\t-> Hub Port: %d\n\t-> Channel %d\n\n", serialNumber, hubPort, channel );
+				CI_LOG_V( "Attach Event: Serial Number: " << serialNumber << "\n\t-> Hub Port: " << hubPort << "\n\t-> Channel: " << channel );
 			}
 			else {
-				CI_LOG_V( "\nAttach Event:\n\t-> Serial Number: %d\n\t-> Channel %d\n\n", serialNumber, channel );
+				CI_LOG_V( "Attach Event:Serial Number: " << serialNumber << "\n\t-> Channel: " << channel );
 			}
 		}
 
@@ -283,10 +303,10 @@ namespace po
 					return;
 				}
 
-				CI_LOG_V( "\nDetach Event:\n\t-> Serial Number: %d\n\t-> Hub Port: %d\n\t-> Channel %d\n\n", serialNumber, hubPort, channel );
+				CI_LOG_V( "Detach Event:-> Serial Number: " << serialNumber << "\n\t-> Hub Port: " << hubPort << "\n\t-> Channel " << channel );
 			}
 			else {
-				CI_LOG_V( "\nDetach Event:\n\t-> Serial Number: %d\n\t-> Channel %d\n\n", serialNumber, channel );
+				CI_LOG_V( "Detach Event:-> Serial Number: " << serialNumber << "\n\t-> Channel " << channel );
 			}
 		}
 
@@ -302,7 +322,7 @@ namespace po
 		void CCONV VoltageRatioInput::onErrorHandler( PhidgetHandle phid, void* ctx, Phidget_ErrorEventCode errorCode, const char* errorString )
 		{
 
-			CI_LOG_E( stderr, "[Phidget Error Event] -> %s (%d)\n", errorString, errorCode );
+			CI_LOG_E( "[Phidget Error Event] -> " << errorString << ", code:" << errorCode );
 		}
 
 
@@ -316,7 +336,7 @@ namespace po
 		*/
 		void CCONV VoltageRatioInput::onVoltageRatioChangeHandler( PhidgetVoltageRatioInputHandle pvrih, void* ctx, double ratio )
 		{
-			CI_LOG_V( "[VoltageRatio Event] -> Ratio: %.4f\n", ratio );
+			CI_LOG_V( "[VoltageRatio Event] -> Ratio: " << ratio );
 		}
 
 		/**
@@ -329,21 +349,11 @@ namespace po
 		int VoltageRatioInput::setVoltageRatioHandler( PhidgetVoltageRatioInputHandle pvrih, PhidgetVoltageRatioInput_OnVoltageRatioChangeCallback fptr )
 		{
 			PhidgetReturnCode prc;
-
-			if( fptr ) {
-				printf( "\n--------------------\n"
-				        "\n  | Voltage ratio change events contain the most recent voltage ratio received from the device.\n"
-				        "  | The linked VoltageRatioChange function will run as an event at every DataInterval.\n"
-				        "  | These events will not occur until a change in ratio >= to the set ChangeTrigger has occured.\n"
-				        "  | DataInterval and ChangeTrigger should initially be set in the device AttachHandler function.\n" );
-			}
-
-			printf( "\n%s OnVoltageRatioChangeHandler...\n", ( fptr ? "Setting" : "Clearing" ) );
-			printf( "\n--------------------\n" );
+			CI_LOG_V( "Setting voltage ratio handler" );
 			prc = PhidgetVoltageRatioInput_setOnVoltageRatioChangeHandler( pvrih, fptr, NULL );
 
 			if( EPHIDGET_OK != prc ) {
-				fprintf( stderr, "Runtime Error -> Setting VoltageRatioChangeHandler: \n\t" );
+				CI_LOG_E( "Runtime Error -> Setting VoltageRatioChangeHandler: \n\t" );
 				DisplayError( prc );
 				return 1;
 			}
