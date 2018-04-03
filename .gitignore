@@ -1,0 +1,34 @@
+#OS X Files
+*.DS_STORE
+
+# Windows files
+Thumbs.db
+desktop.ini
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+
+Debug/*
+Release/*
+
+# Xcode Noise
+*~.nib
+*.pbxuser
+*.perspective
+*.perspectivev3
+*.mode1v3
+*.mode2v3
+*.xcworkspace
+*.xcuserdata
+xcuserdata/
+build/
+
+#VS2015 Noise
+*.opendb
+*.db
+*.aps
+.vs/
+x64/
+DerivedData
