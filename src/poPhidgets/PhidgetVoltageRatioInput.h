@@ -38,6 +38,7 @@ namespace po
 				int setAttachDetachError_Handlers( PhidgetHandle ch );
 				static int setVoltageRatioHandler( PhidgetVoltageRatioInputHandle pvrih, PhidgetVoltageRatioInput_OnVoltageRatioChangeCallback fptr );
 				int openPhidgetChannelWithTimeout( PhidgetHandle ch, int timeout = 5000 );
+				int closePhidgetChannel( PhidgetHandle ch );
 
 				//	event handlers
 				static void CCONV onAttachHandler( PhidgetHandle ph, void* ctx );

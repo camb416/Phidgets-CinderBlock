@@ -20,7 +20,7 @@ namespace po
 		VoltageRatioInput::~VoltageRatioInput()
 		{
 			CI_LOG_V( "Closing voltage ratio input handle" );
-			ClosePhidgetChannel( ( PhidgetHandle )mHandle );
+			closePhidgetChannel( ( PhidgetHandle )mHandle );
 			PhidgetVoltageRatioInput_delete( &mHandle );
 		}
 
@@ -175,6 +175,22 @@ namespace po
 
 			if( prc != EPHIDGET_OK ) {
 				CI_LOG_E( "Runtime Error -> Opening Phidget Channel" );
+				DisplayError( prc );
+				return 1;
+			}
+
+			return 0;
+		}
+
+		int VoltageRatioInput::closePhidgetChannel( PhidgetHandle ch )
+		{
+			PhidgetReturnCode prc;
+
+			CI_LOG_V( "Closing Channel..." );
+			prc = Phidget_close( ch );
+
+			if( prc != EPHIDGET_OK ) {
+				CI_LOG_E( "Runtime Error -> Closing Phidget Channel" );
 				DisplayError( prc );
 				return 1;
 			}
