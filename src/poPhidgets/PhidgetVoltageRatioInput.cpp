@@ -64,7 +64,7 @@ namespace po
 			prc = PhidgetVoltageRatioInput_create( pvrih );
 
 			if( EPHIDGET_OK != prc ) {
-				CI_LOG_E( "Runtime Error -> Creating VoltageRatioInput: \n\t" );
+				CI_LOG_E( "Runtime Error -> Creating VoltageRatioInput:" );
 				DisplayError( prc );
 				return 1;
 			}
@@ -81,7 +81,7 @@ namespace po
 			prc = Phidget_setDeviceSerialNumber( ph, deviceSerialNumber );
 
 			if( EPHIDGET_OK != prc ) {
-				CI_LOG_E( "Runtime Error -> Setting DeviceSerialNumber: \n\t" );
+				CI_LOG_E( "Runtime Error -> Setting DeviceSerialNumber" );
 				DisplayError( prc );
 				return 1;
 			}
@@ -143,6 +143,29 @@ namespace po
 			return 0;
 		}
 
+		/**
+		* Sets the event handler for VoltageRatioInput's VoltageRatioChange event
+		*
+		* @param pvrih The PhidgetVoltageRatioInputHandle channel to add the event to
+		* @param fptr The callback function to be called when a VoltageRatioChange event is fired
+		* @return 0 if the operation succeeds, 1 if it fails
+		*/
+		int VoltageRatioInput::setVoltageRatioHandler( PhidgetVoltageRatioInputHandle pvrih, PhidgetVoltageRatioInput_OnVoltageRatioChangeCallback fptr )
+		{
+			PhidgetReturnCode prc;
+			CI_LOG_V( "Setting voltage ratio handler" );
+			prc = PhidgetVoltageRatioInput_setOnVoltageRatioChangeHandler( pvrih, fptr, NULL );
+
+			if( EPHIDGET_OK != prc ) {
+				CI_LOG_E( "Runtime Error -> Setting VoltageRatioChangeHandler: \n\t" );
+				DisplayError( prc );
+				return 1;
+			}
+
+			return 0;
+		}
+
+
 		int VoltageRatioInput::openPhidgetChannelWithTimeout( PhidgetHandle ch, int timeout )
 		{
 			PhidgetReturnCode prc;
@@ -158,22 +181,6 @@ namespace po
 
 			return 0;
 		}
-
-
-		//int VoltageRatioInput::setVoltageRatioChangeHandler( PhidgetVoltageRatioInputHandle pvrih )
-		//{
-		//	PhidgetReturnCode prc;
-		//	prc = PhidgetVoltageRatioInput_setOnVoltageRatioChangeHandler( pvrih, onVoltageRatioChangeHandler, NULL );
-
-		//	if( EPHIDGET_OK != prc ) {
-		//		CI_LOG_E( stderr, "Runtime Error -> Setting VoltageRatioChangeHandler: \n\t" );
-		//		DisplayError( prc );
-		//		return 1;
-		//	}
-
-		//	return 0;
-		//}
-
 
 		/**
 		* Configures the device's DataInterval and ChangeTrigger.
@@ -338,31 +345,5 @@ namespace po
 		{
 			CI_LOG_V( "[VoltageRatio Event] -> Ratio: " << ratio );
 		}
-
-		/**
-		* Sets the event handler for VoltageRatioInput's VoltageRatioChange event
-		*
-		* @param pvrih The PhidgetVoltageRatioInputHandle channel to add the event to
-		* @param fptr The callback function to be called when a VoltageRatioChange event is fired
-		* @return 0 if the operation succeeds, 1 if it fails
-		*/
-		int VoltageRatioInput::setVoltageRatioHandler( PhidgetVoltageRatioInputHandle pvrih, PhidgetVoltageRatioInput_OnVoltageRatioChangeCallback fptr )
-		{
-			PhidgetReturnCode prc;
-			CI_LOG_V( "Setting voltage ratio handler" );
-			prc = PhidgetVoltageRatioInput_setOnVoltageRatioChangeHandler( pvrih, fptr, NULL );
-
-			if( EPHIDGET_OK != prc ) {
-				CI_LOG_E( "Runtime Error -> Setting VoltageRatioChangeHandler: \n\t" );
-				DisplayError( prc );
-				return 1;
-			}
-
-			return 0;
-		}
-
-
-
-
 	}
 }

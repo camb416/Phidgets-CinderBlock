@@ -31,17 +31,19 @@ namespace po
 			private:
 				PhidgetVoltageRatioInputHandle mHandle;
 
+				//	called during setup
 				static int createVoltageRatioInput( PhidgetVoltageRatioInputHandle* pvrih );
 				int setSerialNumber( PhidgetHandle ph, int deviceSerialNumber = -1 );
 				int setChannel( PhidgetHandle ph, int channel = 0 );
 				int setAttachDetachError_Handlers( PhidgetHandle ch );
+				static int setVoltageRatioHandler( PhidgetVoltageRatioInputHandle pvrih, PhidgetVoltageRatioInput_OnVoltageRatioChangeCallback fptr );
 				int openPhidgetChannelWithTimeout( PhidgetHandle ch, int timeout = 5000 );
 
+				//	event handlers
 				static void CCONV onAttachHandler( PhidgetHandle ph, void* ctx );
 				static void CCONV onDetachHandler( PhidgetHandle ph, void* ctx );
 				static void CCONV onErrorHandler( PhidgetHandle phid, void* ctx, Phidget_ErrorEventCode errorCode, const char* errorString );
 				static void CCONV onVoltageRatioChangeHandler( PhidgetVoltageRatioInputHandle pvrih, void* ctx, double ratio );
-				static int setVoltageRatioHandler( PhidgetVoltageRatioInputHandle pvrih, PhidgetVoltageRatioInput_OnVoltageRatioChangeCallback fptr );
 		};
 	}
 }
