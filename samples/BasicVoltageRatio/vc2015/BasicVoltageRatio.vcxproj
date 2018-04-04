@@ -208,13 +208,11 @@ exit 0</Command>
   <ItemGroup />
   <ItemGroup />
   <ItemGroup>
-    <ClCompile Include="..\..\..\include\PhidgetHelperFunctions.c" />
     <ClCompile Include="..\..\..\src\poPhidgets\PhidgetVoltageRatioInput.cpp" />
     <ClCompile Include="..\src\BasicVoltageRatioApp.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\phidget22.h" />
-    <ClInclude Include="..\..\..\include\PhidgetHelperFunctions.h" />
     <ClInclude Include="..\..\..\src\poPhidgets\PhidgetVoltageRatioInput.h" />
     <ClInclude Include="..\include\Resources.h" />
   </ItemGroup>

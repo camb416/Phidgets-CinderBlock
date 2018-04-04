@@ -34,9 +34,15 @@ namespace po
 		//
 		VoltageRatioInput::~VoltageRatioInput()
 		{
-			CI_LOG_V( "Closing voltage ratio input handle" );
-			closePhidgetChannel( ( PhidgetHandle )mHandle );
-			PhidgetVoltageRatioInput_delete( &mHandle );
+			if( mHandle != NULL ) {
+				CI_LOG_V( "Closing voltage ratio input handle" );
+				closePhidgetChannel( ( PhidgetHandle )mHandle );
+				PhidgetVoltageRatioInput_delete( &mHandle ); // this sets handle value to NULL
+
+			}
+			else {
+				CI_LOG_V( "Handle was null; methods in destructor skipped" );
+			}
 		}
 
 		//
@@ -44,13 +50,18 @@ namespace po
 		//	Returns last reported voltage ratio value from channel
 		double VoltageRatioInput::getSensorVal()
 		{
+			if( mHandle == NULL ) {
+				CI_LOG_W( "VoltageRatioInput handle does not exist" );
+				return 0.0;
+			}
+
 			PhidgetReturnCode prc;
 			double voltageRatio;
 			prc = PhidgetVoltageRatioInput_getVoltageRatio( mHandle, &voltageRatio );
 
 			if( EPHIDGET_OK != prc ) {
 				CI_LOG_E( "Runtime Error -> Creating VoltageRatioInput:" );
-				DisplayError( prc );
+				displayError( prc );
 				return 1;
 			}
 
@@ -99,7 +110,7 @@ namespace po
 
 			if( EPHIDGET_OK != prc ) {
 				CI_LOG_E( "Runtime Error -> Creating VoltageRatioInput:" );
-				DisplayError( prc );
+				displayError( prc );
 				return 1;
 			}
 
@@ -116,7 +127,7 @@ namespace po
 
 			if( EPHIDGET_OK != prc ) {
 				CI_LOG_E( "Runtime Error -> Setting DeviceSerialNumber" );
-				DisplayError( prc );
+				displayError( prc );
 				return 1;
 			}
 
@@ -131,7 +142,7 @@ namespace po
 
 			if( EPHIDGET_OK != prc ) {
 				CI_LOG_E( "Runtime Error -> Setting Channel: \n\t" );
-				DisplayError( prc );
+				displayError( prc );
 				return 1;
 			}
 
@@ -152,7 +163,7 @@ namespace po
 
 			if( EPHIDGET_OK != prc ) {
 				CI_LOG_E( "Runtime Error -> Set Attach Handler" );
-				DisplayError( prc );
+				displayError( prc );
 				return 1;
 			}
 
@@ -161,7 +172,7 @@ namespace po
 
 			if( EPHIDGET_OK != prc ) {
 				CI_LOG_E( "Runtime Error -> Set Detach Handler" );
-				DisplayError( prc );
+				displayError( prc );
 				return 1;
 			}
 
@@ -170,7 +181,7 @@ namespace po
 
 			if( EPHIDGET_OK != prc ) {
 				CI_LOG_E( "Runtime Error -> Set Error Handler" );
-				DisplayError( prc );
+				displayError( prc );
 				return 1;
 			}
 
@@ -192,7 +203,7 @@ namespace po
 
 			if( EPHIDGET_OK != prc ) {
 				CI_LOG_E( "Runtime Error -> Setting VoltageRatioChangeHandler: \n\t" );
-				DisplayError( prc );
+				displayError( prc );
 				return 1;
 			}
 
@@ -209,7 +220,7 @@ namespace po
 
 			if( prc != EPHIDGET_OK ) {
 				CI_LOG_E( "Runtime Error -> Opening Phidget Channel" );
-				DisplayError( prc );
+				displayError( prc );
 				return 1;
 			}
 
@@ -225,7 +236,7 @@ namespace po
 
 			if( prc != EPHIDGET_OK ) {
 				CI_LOG_E( "Runtime Error -> Closing Phidget Channel" );
-				DisplayError( prc );
+				displayError( prc );
 				return 1;
 			}
 
@@ -257,16 +268,16 @@ namespace po
 			prc = PhidgetVoltageRatioInput_getMinDataInterval( ( PhidgetVoltageRatioInputHandle )ph, &minDataInterval );
 
 			if( EPHIDGET_OK != prc ) {
-				CI_LOG_E( "Runtime Error -> Getting min data interval:" );
-				DisplayError( prc );
+				CI_LOG_E( "Runtime Error -> Getting min data interval" );
+				displayError( prc );
 				return;
 			}
 
 			prc = PhidgetVoltageRatioInput_getMaxDataInterval( ( PhidgetVoltageRatioInputHandle )ph, &maxDataInterval );
 
 			if( EPHIDGET_OK != prc ) {
-				CI_LOG_E( "Runtime Error -> Getting max data interval:" );
-				DisplayError( prc );
+				CI_LOG_E( "Runtime Error -> Getting max data interval" );
+				displayError( prc );
 				return;
 			}
 
@@ -285,7 +296,7 @@ namespace po
 
 			if( EPHIDGET_OK != prc ) {
 				CI_LOG_E( "Runtime Error -> Set DataInterval" );
-				DisplayError( prc );
+				displayError( prc );
 				return;
 			}
 
@@ -299,7 +310,7 @@ namespace po
 
 			if( EPHIDGET_OK != prc ) {
 				CI_LOG_E( "Runtime Error -> Set VoltageRatioChangeTrigger: \n\t" );
-				DisplayError( prc );
+				displayError( prc );
 				return;
 			}
 
@@ -308,7 +319,7 @@ namespace po
 
 			if( EPHIDGET_OK != prc ) {
 				CI_LOG_E( "Runtime Error -> Get DeviceSerialNumber: \n\t" );
-				DisplayError( prc );
+				displayError( prc );
 				return;
 			}
 
@@ -317,7 +328,7 @@ namespace po
 
 			if( EPHIDGET_OK != prc ) {
 				CI_LOG_E( "Runtime Error -> Get Channel: \n\t" );
-				DisplayError( prc );
+				displayError( prc );
 				return;
 			}
 
@@ -330,7 +341,7 @@ namespace po
 
 				if( EPHIDGET_OK != prc ) {
 					CI_LOG_E( "Runtime Error -> Get HubPort: \n\t" );
-					DisplayError( prc );
+					displayError( prc );
 					return;
 				}
 
@@ -362,7 +373,7 @@ namespace po
 
 			if( EPHIDGET_OK != prc ) {
 				CI_LOG_E( "Runtime Error -> Get DeviceSerialNumber: \n\t" );
-				DisplayError( prc );
+				displayError( prc );
 				return;
 			}
 
@@ -370,7 +381,7 @@ namespace po
 
 			if( EPHIDGET_OK != prc ) {
 				CI_LOG_E( "Runtime Error -> Get Channel: \n\t" );
-				DisplayError( prc );
+				displayError( prc );
 				return;
 			}
 
@@ -382,7 +393,7 @@ namespace po
 
 				if( EPHIDGET_OK != prc ) {
 					CI_LOG_E( "Runtime Error -> Get HubPort: \n\t" );
-					DisplayError( prc );
+					displayError( prc );
 					return;
 				}
 
@@ -419,6 +430,26 @@ namespace po
 		void CCONV VoltageRatioInput::onVoltageRatioChangeHandler( PhidgetVoltageRatioInputHandle pvrih, void* ctx, double ratio )
 		{
 			CI_LOG_V( "[VoltageRatio Event] -> Ratio: " << ratio );
+		}
+
+		//
+		//	Display Error messages
+		//
+		void VoltageRatioInput::displayError( PhidgetReturnCode code )
+		{
+			PhidgetReturnCode prc;
+			const char* error;
+
+			prc = Phidget_getErrorDescription( code, &error );
+
+			if( EPHIDGET_OK != prc ) {
+				CI_LOG_E( "Runtime Error -> Getting ErrorDescription: \n\t" );
+				//displayError( prc );
+				return;
+			}
+
+			CI_LOG_E( "Error desc: " << error );
+
 		}
 	}
 }

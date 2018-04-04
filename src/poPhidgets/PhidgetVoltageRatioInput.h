@@ -7,10 +7,6 @@ Adapted from example available here: https://www.phidgets.com/?view=code_samples
 #include <memory>
 #include <phidget22.h>
 
-extern "C" {
-#include "PhidgetHelperFunctions.h"
-}
-
 namespace po
 {
 	namespace phidget
@@ -32,7 +28,7 @@ namespace po
 				void setup( int serialNum = -1, int channelNum = 0 );
 
 			private:
-				PhidgetVoltageRatioInputHandle mHandle;
+				PhidgetVoltageRatioInputHandle mHandle = NULL;
 
 				//	called during setup
 				static int createVoltageRatioInput( PhidgetVoltageRatioInputHandle* pvrih );
@@ -48,6 +44,9 @@ namespace po
 				static void CCONV onDetachHandler( PhidgetHandle ph, void* ctx );
 				static void CCONV onErrorHandler( PhidgetHandle phid, void* ctx, Phidget_ErrorEventCode errorCode, const char* errorString );
 				static void CCONV onVoltageRatioChangeHandler( PhidgetVoltageRatioInputHandle pvrih, void* ctx, double ratio );
+
+				//	error display
+				static void displayError( PhidgetReturnCode code );
 		};
 	}
 }
