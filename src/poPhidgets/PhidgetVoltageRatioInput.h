@@ -22,11 +22,14 @@ namespace po
 		{
 			public:
 				static VoltageRatioInputRef create();
+				static VoltageRatioInputRef create( int serialNum, int channelNum );
 				~VoltageRatioInput();
+
+				float getSensorVal();
 
 			protected:
 				VoltageRatioInput();
-				void setup();
+				void setup( int serialNum = -1, int channelNum = 0 );
 
 			private:
 				PhidgetVoltageRatioInputHandle mHandle;

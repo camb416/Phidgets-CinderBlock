@@ -6,17 +6,32 @@ namespace po
 {
 	namespace phidget
 	{
+		//
+		//	Create without parameters uses default values in setup
+		//
 		VoltageRatioInputRef VoltageRatioInput::create()
 		{
 			VoltageRatioInputRef ref( new VoltageRatioInput() );
-			ref->setup();
+			ref->setup( -1, 0 );
+			return ref;
+		}
+
+		//
+		//	Create and specify serial number and channel number
+		//
+		VoltageRatioInputRef VoltageRatioInput::create( int serialNum, int channelNum )
+		{
+			VoltageRatioInputRef ref( new VoltageRatioInput() );
+			ref->setup( serialNum, channelNum );
 			return ref;
 		}
 
 		VoltageRatioInput::VoltageRatioInput()
 		{}
 
-
+		//
+		//	close channel on destroy
+		//
 		VoltageRatioInput::~VoltageRatioInput()
 		{
 			CI_LOG_V( "Closing voltage ratio input handle" );
@@ -24,17 +39,22 @@ namespace po
 			PhidgetVoltageRatioInput_delete( &mHandle );
 		}
 
-		void VoltageRatioInput::setup()
+		float VoltageRatioInput::getSensorVal()
+		{
+			return 0.0f;
+		}
+
+		void VoltageRatioInput::setup( int serialNum, int channelNum )
 		{
 			if( createVoltageRatioInput( &mHandle ) ) {
 				return;
 			}
 
-			if( setSerialNumber( PhidgetHandle( mHandle ) ) ) {
+			if( setSerialNumber( PhidgetHandle( mHandle ), serialNum ) ) {
 				return;
 			}
 
-			if( setChannel( PhidgetHandle( mHandle ), 5 ) ) {
+			if( setChannel( PhidgetHandle( mHandle ), channelNum ) ) {
 				return;
 			}
 
@@ -49,6 +69,7 @@ namespace po
 			if( openPhidgetChannelWithTimeout( PhidgetHandle( mHandle ), 5000 ) ) {
 				return;
 			}
+
 		}
 
 		/**
@@ -215,16 +236,42 @@ namespace po
 			int32_t hubPort;
 			int32_t channel;
 
+			//	Find max and min data intervals
+
+			uint32_t minDataInterval;
+			uint32_t maxDataInterval;
+
+			prc = PhidgetVoltageRatioInput_getMinDataInterval( ( PhidgetVoltageRatioInputHandle )ph, &minDataInterval );
+
+			if( EPHIDGET_OK != prc ) {
+				CI_LOG_E( "Runtime Error -> Getting min data interval:" );
+				DisplayError( prc );
+				return;
+			}
+
+			prc = PhidgetVoltageRatioInput_getMaxDataInterval( ( PhidgetVoltageRatioInputHandle )ph, &maxDataInterval );
+
+			if( EPHIDGET_OK != prc ) {
+				CI_LOG_E( "Runtime Error -> Getting max data interval:" );
+				DisplayError( prc );
+				return;
+			}
+
+			CI_LOG_V( "Max and min data intervals (in milliseconds)\t Max: " << maxDataInterval << ", min: " << minDataInterval );
+
+
 			/*
 			*	Set the DataInterval inside of the attach handler to initialize the device with this value.
 			*	DataInterval defines the minimum time between VoltageRatioChange events.
 			*	DataInterval can be set to any value from MinDataInterval to MaxDataInterval.
 			*/
+
+
 			CI_LOG_V( "\tSetting DataInterval to 1000ms\n" );
-			prc = PhidgetVoltageRatioInput_setDataInterval( ( PhidgetVoltageRatioInputHandle )ph, 1000 );
+			prc = PhidgetVoltageRatioInput_setDataInterval( ( PhidgetVoltageRatioInputHandle )ph, 10 );
 
 			if( EPHIDGET_OK != prc ) {
-				CI_LOG_E( "Runtime Error -> Set DataInterval: \n\t" );
+				CI_LOG_E( "Runtime Error -> Set DataInterval" );
 				DisplayError( prc );
 				return;
 			}
@@ -235,7 +282,7 @@ namespace po
 			*	the ratio changes by at least the value set.
 			*/
 			CI_LOG_V( "\tSetting VoltageRatio ChangeTrigger to 0.0\n" );
-			prc = PhidgetVoltageRatioInput_setVoltageRatioChangeTrigger( ( PhidgetVoltageRatioInputHandle )ph, 0.0 );
+			prc = PhidgetVoltageRatioInput_setVoltageRatioChangeTrigger( ( PhidgetVoltageRatioInputHandle )ph, 0.05 );
 
 			if( EPHIDGET_OK != prc ) {
 				CI_LOG_E( "Runtime Error -> Set VoltageRatioChangeTrigger: \n\t" );
@@ -344,7 +391,6 @@ namespace po
 		*/
 		void CCONV VoltageRatioInput::onErrorHandler( PhidgetHandle phid, void* ctx, Phidget_ErrorEventCode errorCode, const char* errorString )
 		{
-
 			CI_LOG_E( "[Phidget Error Event] -> " << errorString << ", code:" << errorCode );
 		}
 

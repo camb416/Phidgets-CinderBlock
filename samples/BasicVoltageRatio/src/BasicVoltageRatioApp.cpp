@@ -28,7 +28,8 @@ class BasicVoltageRatioApp : public App
 
 void BasicVoltageRatioApp::setup()
 {
-	mInput = po::phidget::VoltageRatioInput::create();
+	mInput = po::phidget::VoltageRatioInput::create( -1, 5 );
+
 }
 
 void BasicVoltageRatioApp::mouseDown( MouseEvent event )
