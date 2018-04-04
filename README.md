@@ -16,3 +16,18 @@ Currently includes a class for a VoltageRatioInput device, which can be a slider
 There's lots more about working with the Phidgets API here:
 http://www.phidgets.com/programming_resources.php
 
+### Libraries
+
+The Windows 64-bit libraries are included in this block. The Mac libraries require the installer available [here](https://www.phidgets.com/docs/OS_-_macOS). It installs the following files:
+
+| File | Description | Location |
+| :--------------------- | :--------------------------------- | :--------------------------- |
+| Phidget22.framework    | contains library, used at run-time | `/Library/Frameworks`        |
+| Phidget.kext           | kernel extension                   | `/System/Library/Extensions` |
+| phidgetnetworkserver22 | Phidget Network Server             | `/usr/local/bin`             |
+
+### Development notes
+
+When setting this up in Mac OSX, you will need to add a flag for the compiler. Add `-fdeclspec` to "Other C Flags" in the target's Build Settings under "Apple LLVM 9.0 - Custom Compiler Flags" (this will automatically add it to "Other C++ Flags" as well).
+
+![Build settings](imgs/buildSettings.png)
