@@ -25,7 +25,7 @@ namespace po
 				static VoltageRatioInputRef create( int serialNum, int channelNum );
 				~VoltageRatioInput();
 
-				float getSensorVal();
+				double getSensorVal();
 
 			protected:
 				VoltageRatioInput();

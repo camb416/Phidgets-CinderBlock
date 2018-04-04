@@ -39,9 +39,22 @@ namespace po
 			PhidgetVoltageRatioInput_delete( &mHandle );
 		}
 
-		float VoltageRatioInput::getSensorVal()
+		//
+		//	Public method;
+		//	Returns last reported voltage ratio value from channel
+		double VoltageRatioInput::getSensorVal()
 		{
-			return 0.0f;
+			PhidgetReturnCode prc;
+			double voltageRatio;
+			prc = PhidgetVoltageRatioInput_getVoltageRatio( mHandle, &voltageRatio );
+
+			if( EPHIDGET_OK != prc ) {
+				CI_LOG_E( "Runtime Error -> Creating VoltageRatioInput:" );
+				DisplayError( prc );
+				return 1;
+			}
+
+			return voltageRatio;
 		}
 
 		void VoltageRatioInput::setup( int serialNum, int channelNum )

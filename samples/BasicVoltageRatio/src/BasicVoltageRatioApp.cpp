@@ -28,12 +28,15 @@ class BasicVoltageRatioApp : public App
 
 void BasicVoltageRatioApp::setup()
 {
+
 	mInput = po::phidget::VoltageRatioInput::create( -1, 5 );
 
 }
 
 void BasicVoltageRatioApp::mouseDown( MouseEvent event )
 {
+	double sensorVal = mInput->getSensorVal();
+	CI_LOG_V( "Calling getSensorValue on VoltageRatioInput: " << sensorVal );
 }
 
 void BasicVoltageRatioApp::keyDown( KeyEvent event )
