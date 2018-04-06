@@ -70,10 +70,6 @@ namespace po
 
 		void VoltageRatioInput::setup( int serialNum, int channelNum )
 		{
-//            testFuncPointer = &VoltageRatioInput::testCallbackFunction;
-//            CI_LOG_V(testFuncPointer);
-            testFunc = &VoltageRatioInput::superSimpleTestFunc;
-            CI_LOG_V(testFunc);
             
 			if( createVoltageRatioInput( &mHandle ) ) {
 				return;
@@ -90,10 +86,6 @@ namespace po
 			if( setAttachDetachError_Handlers( PhidgetHandle( mHandle ) ) ) {
 				return;
 			}
-
-//            if( setVoltageRatioHandler( mHandle, onVoltageRatioChangeHandler, std::bind(&VoltageRatioInput::testCallbackFunction, this, std::placeholders::_1)))  {
-//                return;
-//            }
 
             if( setVoltageRatioHandler( mHandle, onVoltageRatioChangeHandler))  {
                 return;

@@ -7,6 +7,7 @@ Adapted from example available here: https://www.phidgets.com/?view=code_samples
 #include <memory>
 #include <phidget22.h>
 
+
 namespace po
 {
 	namespace phidget
