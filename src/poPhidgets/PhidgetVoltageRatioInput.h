@@ -28,15 +28,13 @@ namespace po
             : public std::enable_shared_from_this<VoltageRatioInput>
 		{
 			public:
-            typedef void(VoltageRatioInput::*myFunc)();
-            
-				static VoltageRatioInputRef create();
+    			static VoltageRatioInputRef create();
 				static VoltageRatioInputRef create( int serialNum, int channelNum );
-            
-				~VoltageRatioInput();
+    
                 void setDelegate(VoltageRatioInputDelegateRef delegate){ mDelegate = delegate; };
             
 				double getSensorVal();
+                ~VoltageRatioInput();
 
 			protected:
 				VoltageRatioInput();
@@ -44,18 +42,13 @@ namespace po
 
 			private:
 				PhidgetVoltageRatioInputHandle mHandle = NULL;
-                double (VoltageRatioInput::*testFuncPointer)(double) = NULL;
-                myFunc testFunc = NULL;
-
+    
 				//	called during setup
 				static int createVoltageRatioInput( PhidgetVoltageRatioInputHandle* pvrih );
 				int setSerialNumber( PhidgetHandle ph, int deviceSerialNumber = -1 );
 				int setChannel( PhidgetHandle ph, int channel = 0 );
 				int setAttachDetachError_Handlers( PhidgetHandle ch );
 				int setVoltageRatioHandler( PhidgetVoltageRatioInputHandle pvrih, PhidgetVoltageRatioInput_OnVoltageRatioChangeCallback fptr );
-//                int setVoltageRatioHandler(PhidgetVoltageRatioInputHandle pvrih, PhidgetVoltageRatioInput_OnVoltageRatioChangeCallback fptr, VoltageRatioInputDelegateRef delegate);
-//                int setVoltageRatioHandler(PhidgetVoltageRatioInputHandle pvrih, PhidgetVoltageRatioInput_OnVoltageRatioChangeCallback fptr, double(VoltageRatioInput::*)(double));
-//                int setVoltageRatioHandler(PhidgetVoltageRatioInputHandle pvrih, PhidgetVoltageRatioInput_OnVoltageRatioChangeCallback fptr, std::function<void(double)>func2);
                 int openPhidgetChannelWithTimeout( PhidgetHandle ch, int timeout = 5000 );
 				int closePhidgetChannel( PhidgetHandle ch );
 
@@ -71,7 +64,6 @@ namespace po
                 //  communication
                 VoltageRatioInputDelegateRef mDelegate;
                 void testCallbackFunction(double test);
-                void superSimpleTestFunc();
 		};
 	}
 }
