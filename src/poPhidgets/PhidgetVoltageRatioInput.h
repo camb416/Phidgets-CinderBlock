@@ -25,6 +25,7 @@ namespace po
         };
         
 		class VoltageRatioInput
+            : public std::enable_shared_from_this<VoltageRatioInput>
 		{
 			public:
             typedef void(VoltageRatioInput::*myFunc)();
@@ -52,9 +53,9 @@ namespace po
 				int setChannel( PhidgetHandle ph, int channel = 0 );
 				int setAttachDetachError_Handlers( PhidgetHandle ch );
 				int setVoltageRatioHandler( PhidgetVoltageRatioInputHandle pvrih, PhidgetVoltageRatioInput_OnVoltageRatioChangeCallback fptr );
-                int setVoltageRatioHandler(PhidgetVoltageRatioInputHandle pvrih, PhidgetVoltageRatioInput_OnVoltageRatioChangeCallback fptr, VoltageRatioInputDelegateRef delegate);
-                int setVoltageRatioHandler(PhidgetVoltageRatioInputHandle pvrih, PhidgetVoltageRatioInput_OnVoltageRatioChangeCallback fptr, double(VoltageRatioInput::*)(double));
-                int setVoltageRatioHandler(PhidgetVoltageRatioInputHandle pvrih, PhidgetVoltageRatioInput_OnVoltageRatioChangeCallback fptr, std::function<void(double)>func2);
+//                int setVoltageRatioHandler(PhidgetVoltageRatioInputHandle pvrih, PhidgetVoltageRatioInput_OnVoltageRatioChangeCallback fptr, VoltageRatioInputDelegateRef delegate);
+//                int setVoltageRatioHandler(PhidgetVoltageRatioInputHandle pvrih, PhidgetVoltageRatioInput_OnVoltageRatioChangeCallback fptr, double(VoltageRatioInput::*)(double));
+//                int setVoltageRatioHandler(PhidgetVoltageRatioInputHandle pvrih, PhidgetVoltageRatioInput_OnVoltageRatioChangeCallback fptr, std::function<void(double)>func2);
                 int openPhidgetChannelWithTimeout( PhidgetHandle ch, int timeout = 5000 );
 				int closePhidgetChannel( PhidgetHandle ch );
 

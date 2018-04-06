@@ -103,9 +103,13 @@ namespace po
 				return;
 			}
 
-            if( setVoltageRatioHandler( mHandle, onVoltageRatioChangeHandler, std::bind(&VoltageRatioInput::testCallbackFunction, this, std::placeholders::_1)))  {
-				return;
-			}
+//            if( setVoltageRatioHandler( mHandle, onVoltageRatioChangeHandler, std::bind(&VoltageRatioInput::testCallbackFunction, this, std::placeholders::_1)))  {
+//                return;
+//            }
+
+            if( setVoltageRatioHandler( mHandle, onVoltageRatioChangeHandler))  {
+                return;
+            }
 
 			if( openPhidgetChannelWithTimeout( PhidgetHandle( mHandle ), 5000 ) ) {
 				return;
@@ -216,7 +220,7 @@ namespace po
 		{
 			PhidgetReturnCode prc;
 			CI_LOG_V( "Setting voltage ratio handler" );
-			prc = PhidgetVoltageRatioInput_setOnVoltageRatioChangeHandler( pvrih, fptr, NULL );
+			prc = PhidgetVoltageRatioInput_setOnVoltageRatioChangeHandler( pvrih, fptr, this );
 
 			if( EPHIDGET_OK != prc ) {
 				CI_LOG_E( "Runtime Error -> Setting VoltageRatioChangeHandler: \n\t" );
@@ -228,65 +232,65 @@ namespace po
 		}
 
 
-        /**
-         * Overloaded function to include delegate
-         */
-        int VoltageRatioInput::setVoltageRatioHandler( PhidgetVoltageRatioInputHandle pvrih, PhidgetVoltageRatioInput_OnVoltageRatioChangeCallback fptr, VoltageRatioInputDelegateRef delegate )
-        {
-            PhidgetReturnCode prc;
-            CI_LOG_V( "Setting voltage ratio handler" );
-            prc = PhidgetVoltageRatioInput_setOnVoltageRatioChangeHandler( pvrih, fptr, NULL );
-            
-            if( EPHIDGET_OK != prc ) {
-                CI_LOG_E( "Runtime Error -> Setting VoltageRatioChangeHandler: \n\t" );
-                displayError( prc );
-                return 1;
-            }
-            
-            if (!delegate.expired()) {
-                delegate.lock()->voltageRatioValueChanged(0.5);
-            }
-            
-            return 0;
-        }
-
-        /**
-         * Overloaded function to include second function
-         */
-        int VoltageRatioInput::setVoltageRatioHandler( PhidgetVoltageRatioInputHandle pvrih, PhidgetVoltageRatioInput_OnVoltageRatioChangeCallback fptr, double(VoltageRatioInput::*func2)(double) )
-        {
-            PhidgetReturnCode prc;
-            CI_LOG_V( "Setting voltage ratio handler" );
-            prc = PhidgetVoltageRatioInput_setOnVoltageRatioChangeHandler( pvrih, fptr, NULL );
-            
-            if( EPHIDGET_OK != prc ) {
-                CI_LOG_E( "Runtime Error -> Setting VoltageRatioChangeHandler: \n\t" );
-                displayError( prc );
-                return 1;
-            }
-            CI_LOG_V(func2);
+//        /**
+//         * Overloaded function to include delegate
+//         */
+//        int VoltageRatioInput::setVoltageRatioHandler( PhidgetVoltageRatioInputHandle pvrih, PhidgetVoltageRatioInput_OnVoltageRatioChangeCallback fptr, VoltageRatioInputDelegateRef delegate )
+//        {
+//            PhidgetReturnCode prc;
+//            CI_LOG_V( "Setting voltage ratio handler" );
+//            prc = PhidgetVoltageRatioInput_setOnVoltageRatioChangeHandler( pvrih, fptr, NULL );
+//
+//            if( EPHIDGET_OK != prc ) {
+//                CI_LOG_E( "Runtime Error -> Setting VoltageRatioChangeHandler: \n\t" );
+//                displayError( prc );
+//                return 1;
+//            }
+//
+//            if (!delegate.expired()) {
+//                delegate.lock()->voltageRatioValueChanged(0.5);
+//            }
+//
+//            return 0;
+//        }
+//
+//        /**
+//         * Overloaded function to include second function
+//         */
+//        int VoltageRatioInput::setVoltageRatioHandler( PhidgetVoltageRatioInputHandle pvrih, PhidgetVoltageRatioInput_OnVoltageRatioChangeCallback fptr, double(VoltageRatioInput::*func2)(double) )
+//        {
+//            PhidgetReturnCode prc;
+//            CI_LOG_V( "Setting voltage ratio handler" );
+//            prc = PhidgetVoltageRatioInput_setOnVoltageRatioChangeHandler( pvrih, fptr, NULL );
+//
+//            if( EPHIDGET_OK != prc ) {
+//                CI_LOG_E( "Runtime Error -> Setting VoltageRatioChangeHandler: \n\t" );
+//                displayError( prc );
+//                return 1;
+//            }
+//            CI_LOG_V(func2);
+////            func2(0.56);
+//            return 0;
+//        }
+//
+//        /**
+//         * Overloaded function to include second function
+//         */
+//        int VoltageRatioInput::setVoltageRatioHandler( PhidgetVoltageRatioInputHandle pvrih, PhidgetVoltageRatioInput_OnVoltageRatioChangeCallback fptr, std::function<void(double)>func2 )
+//        {
+//            PhidgetReturnCode prc;
+//            CI_LOG_V( "Setting voltage ratio handler" );
+//            prc = PhidgetVoltageRatioInput_setOnVoltageRatioChangeHandler( pvrih, fptr, NULL );
+//
+//            if( EPHIDGET_OK != prc ) {
+//                CI_LOG_E( "Runtime Error -> Setting VoltageRatioChangeHandler: \n\t" );
+//                displayError( prc );
+//                return 1;
+//            }
+//            CI_LOG_V("Calling test callback");
 //            func2(0.56);
-            return 0;
-        }
-
-        /**
-         * Overloaded function to include second function
-         */
-        int VoltageRatioInput::setVoltageRatioHandler( PhidgetVoltageRatioInputHandle pvrih, PhidgetVoltageRatioInput_OnVoltageRatioChangeCallback fptr, std::function<void(double)>func2 )
-        {
-            PhidgetReturnCode prc;
-            CI_LOG_V( "Setting voltage ratio handler" );
-            prc = PhidgetVoltageRatioInput_setOnVoltageRatioChangeHandler( pvrih, fptr, NULL );
-            
-            if( EPHIDGET_OK != prc ) {
-                CI_LOG_E( "Runtime Error -> Setting VoltageRatioChangeHandler: \n\t" );
-                displayError( prc );
-                return 1;
-            }
-            CI_LOG_V("Calling test callback");
-            func2(0.56);
-            return 0;
-        }
+//            return 0;
+//        }
 
         int VoltageRatioInput::openPhidgetChannelWithTimeout( PhidgetHandle ch, int timeout )
 		{
@@ -507,7 +511,8 @@ namespace po
         void CCONV VoltageRatioInput::onVoltageRatioChangeHandler( PhidgetVoltageRatioInputHandle pvrih, void* ctx, double ratio )
 		{
 			CI_LOG_V( "[VoltageRatio Event] -> Ratio: " << ratio );
-            
+            VoltageRatioInput* voltageRatioInstance = (VoltageRatioInput*)ctx;
+            voltageRatioInstance->testCallbackFunction(ratio);
 //            if (!mDelegate.expire()) {
 //                mDelegate.lock()->voltageRatioValueChanged(ratio);
 //            }
