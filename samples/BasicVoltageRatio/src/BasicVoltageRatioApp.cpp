@@ -2,7 +2,7 @@
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
 
-#define CI_MIN_LOG_LEVEL 0
+#define CI_MIN_LOG_LEVEL 4
 #include "cinder/Log.h"
 
 #include "poPhidgets/PhidgetVoltageRatioInput.h"
@@ -30,14 +30,8 @@ class BasicVoltageRatioApp
 
 void BasicVoltageRatioApp::setup()
 {
-//    po::phidget::VoltageRatioInputDelegateRef self =  std::make_shared<po::phidget::VoltageRatioInputDelegate>(this);
-//    std::weak_ptr<po::phidget::VoltageRatioInputDelegate> weakPtr = self;
-//    CI_LOG_V(self);
-//    CI_LOG_V(weakPtr.use_count());
-//    mInput = po::phidget::VoltageRatioInput::create(weakPtr, -1, 5);
-    mInput = po::phidget::VoltageRatioInput::create(-1, 5);
-    
-//    std::shared_ptr<App> sp = std::make_shared<App>();
+//    auto consoleLogger = log::makeLogger<cinder::log::LoggerConsole>();
+    mInput = po::phidget::VoltageRatioInput::create(-1, 5, 10, 0.01);
 }
 
 void BasicVoltageRatioApp::mouseDown( MouseEvent event )
@@ -65,7 +59,6 @@ void BasicVoltageRatioApp::update()
 void BasicVoltageRatioApp::draw()
 {
 	gl::clear( Color( 0, 0, 0 ) );
-    int height = ci::app::getWindow()->getHeight();
     
 }
 

@@ -4,9 +4,17 @@ Adapted from example available here: https://www.phidgets.com/?view=code_samples
 
 #pragma once
 
-#include <memory>
+#define __stdcall
+#define __cdecl
+#define __attribute__ ((dllimport))
+#define __declspec(dllimport)
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wignored-attributes"
+
 #include <phidget22.h>
 
+#pragma clang diagnostic pop
 
 namespace po
 {
@@ -30,7 +38,7 @@ namespace po
 		{
 			public:
     			static VoltageRatioInputRef create();
-				static VoltageRatioInputRef create( int serialNum, int channelNum );
+				static VoltageRatioInputRef create( int serialNum, int channelNum, int dataInterval, double changeTrigger );
     
                 void setDelegate(VoltageRatioInputDelegateRef delegate){ mDelegate = delegate; };
             
@@ -39,7 +47,7 @@ namespace po
 
 			protected:
 				VoltageRatioInput();
-				void setup( int serialNum = -1, int channelNum = 0 );
+                void setup( int serialNum = -1, int channelNum = 0, int dataInterval = 100, double changeTrigger = 0.05 );
 
 			private:
 				PhidgetVoltageRatioInputHandle mHandle = NULL;
@@ -48,6 +56,10 @@ namespace po
 				static int createVoltageRatioInput( PhidgetVoltageRatioInputHandle* pvrih );
 				int setSerialNumber( PhidgetHandle ph, int deviceSerialNumber = -1 );
 				int setChannel( PhidgetHandle ph, int channel = 0 );
+            
+                uint32_t mDataInterval;
+                double mChangeTrigger;
+            
 				int setAttachDetachError_Handlers( PhidgetHandle ch );
 				int setVoltageRatioHandler( PhidgetVoltageRatioInputHandle pvrih, PhidgetVoltageRatioInput_OnVoltageRatioChangeCallback fptr );
                 int openPhidgetChannelWithTimeout( PhidgetHandle ch, int timeout = 5000 );
