@@ -1,7 +1,6 @@
 /*
 Adapted from example available here: https://www.phidgets.com/?view=code_samples&lang=C
 */
-
 #pragma once
 
 #define __stdcall
@@ -41,11 +40,8 @@ namespace po
 		{
 			public:
 				static VoltageRatioInputRef create();
-				//static VoltageRatioInputRef create( int serialNum, int channelNum, int dataInterval, double changeTrigger );
 				void setProperties( int serialNum, int channelNum, int dataInterval, double changeTrigger );
-
 				void setDelegate( VoltageRatioInputDelegateRef delegate ) { mDelegate = delegate; };
-
 				double getSensorVal();
 
 				PhidgetHandle getHandle() override { return ( PhidgetHandle ) mHandle; };
@@ -57,8 +53,7 @@ namespace po
 
 			private:
 				PhidgetVoltageRatioInputHandle mHandle = NULL;
-
-				int createSpecificInput();
+				int createSpecificInput() override;
 
 				//	called during setup
 				static int createVoltageRatioInput( PhidgetVoltageRatioInputHandle* pvrih );

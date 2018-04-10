@@ -8,7 +8,7 @@ namespace po
 		//
 		//	Once input's properties are set, can set up handlers and open channel
 		//
-		void BaseInput::createAndOpenChannel()
+		void BaseInput::createAndOpenChannel( int timeout )
 		{
 			createSpecificInput();
 
@@ -27,7 +27,7 @@ namespace po
 			setChangeHandlers( getHandle() );
 
 
-			if( openPhidgetChannelWithTimeout( getHandle(), 5000 ) ) {
+			if( openPhidgetChannelWithTimeout( getHandle(), timeout ) ) {
 				return;
 			}
 

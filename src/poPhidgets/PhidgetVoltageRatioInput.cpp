@@ -1,7 +1,6 @@
 #include "PhidgetVoltageRatioInput.h"
 #include "cinder/Log.h"
 #include "cinder/app/App.h"
-#include <iostream>
 
 namespace po
 {
@@ -13,23 +12,7 @@ namespace po
 		VoltageRatioInputRef VoltageRatioInput::create()
 		{
 			return VoltageRatioInputRef( new VoltageRatioInput() );
-			//ref->setup( -1, 0, 100, 0.05 );
-			//return ref;
 		}
-
-		//
-		//	Create and specify the following:
-		//  Serial number: set to -1 to read from device
-		//  Channel number
-		//  Data interval: The frequency, in milliseconds, the device checks the value
-		//  Change trigger: amount of change that will trigger an event; set to 0 to trigger event every interval
-		//
-		//VoltageRatioInputRef VoltageRatioInput::create( int serialNum, int channelNum, int dataInterval, double changeTrigger )
-		//{
-		//	VoltageRatioInputRef ref( new VoltageRatioInput() );
-		//	ref->setup( serialNum, channelNum, dataInterval, changeTrigger );
-		//	return ref;
-		//}
 
 		VoltageRatioInput::VoltageRatioInput()
 			: mDataInterval( 100 )
@@ -38,6 +21,10 @@ namespace po
 
 		//
 		//	set the desired properties of the input
+		//  Serial number: set to -1 to read from device
+		//  Channel number
+		//  Data interval: The frequency, in milliseconds, the device checks the value
+		//  Change trigger: amount of change that will trigger an event; set to 0 to trigger event every interval
 		//
 		void VoltageRatioInput::setProperties( int serialNum, int channelNum, int dataInterval, double changeTrigger )
 		{

@@ -209,12 +209,14 @@ exit 0</Command>
   <ItemGroup />
   <ItemGroup>
     <ClCompile Include="..\..\..\src\poPhidgets\PhidgetBaseInput.cpp" />
+    <ClCompile Include="..\..\..\src\poPhidgets\PhidgetDistanceSensor.cpp" />
     <ClCompile Include="..\..\..\src\poPhidgets\PhidgetVoltageRatioInput.cpp" />
     <ClCompile Include="..\src\BasicVoltageRatioApp.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\phidget22.h" />
     <ClInclude Include="..\..\..\src\poPhidgets\PhidgetBaseInput.h" />
+    <ClInclude Include="..\..\..\src\poPhidgets\PhidgetDistanceSensor.h" />
     <ClInclude Include="..\..\..\src\poPhidgets\PhidgetVoltageRatioInput.h" />
     <ClInclude Include="..\include\Resources.h" />
   </ItemGroup>

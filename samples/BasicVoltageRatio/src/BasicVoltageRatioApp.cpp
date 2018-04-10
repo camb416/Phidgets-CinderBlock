@@ -2,9 +2,13 @@
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
 
+
+#include "poPhidgets/PhidgetVoltageRatioInput.h"
+#include "poPhidgets/PhidgetDistanceSensor.h"
+
 #define CI_MIN_LOG_LEVEL 4
 #include "cinder/Log.h"
-#include "poPhidgets/PhidgetVoltageRatioInput.h"
+
 
 using namespace ci;
 using namespace ci::app;
@@ -23,15 +27,19 @@ class BasicVoltageRatioApp
 		void voltageRatioValueChanged( double ratio ) override;
 
 		po::phidget::VoltageRatioInputRef mInput;
+		po::phidget::DistanceSensorRef mDistanceInput;
+
 };
 
 void BasicVoltageRatioApp::setup()
 {
-	//    auto consoleLogger = log::makeLogger<cinder::log::LoggerConsole>();
-	//mInput = po::phidget::VoltageRatioInput::create( -1, 5, 10, 0.01 );
-	mInput = po::phidget::VoltageRatioInput::create();
-	mInput->setProperties( -1, 5, 10, 0.01 );
-	mInput->createAndOpenChannel();
+	//mInput = po::phidget::VoltageRatioInput::create();
+	//mInput->setProperties( -1, 5, 10, 0.01 );
+	//mInput->createAndOpenChannel();
+
+	mDistanceInput = po::phidget::DistanceSensor::create();
+	mDistanceInput->setProperties( -1, 5 );
+	mDistanceInput->createAndOpenChannel();
 }
 
 void BasicVoltageRatioApp::mouseDown( MouseEvent event )
