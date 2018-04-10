@@ -41,6 +41,9 @@
     <ClCompile Include="..\..\..\src\poPhidgets\PhidgetVoltageRatioInput.cpp">
       <Filter>Blocks\Cinder-poPhidgets\src\poPhidgets</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\poPhidgets\PhidgetBaseInput.cpp">
+      <Filter>Blocks\Cinder-poPhidgets\src\poPhidgets</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h">
@@ -51,6 +54,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\include\phidget22.h">
       <Filter>Blocks\Cinder-poPhidgets\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\poPhidgets\PhidgetBaseInput.h">
+      <Filter>Blocks\Cinder-poPhidgets\src\poPhidgets</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

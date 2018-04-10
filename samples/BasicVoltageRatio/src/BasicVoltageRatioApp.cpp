@@ -4,7 +4,6 @@
 
 #define CI_MIN_LOG_LEVEL 4
 #include "cinder/Log.h"
-
 #include "poPhidgets/PhidgetVoltageRatioInput.h"
 
 using namespace ci;
@@ -29,7 +28,10 @@ class BasicVoltageRatioApp
 void BasicVoltageRatioApp::setup()
 {
 	//    auto consoleLogger = log::makeLogger<cinder::log::LoggerConsole>();
-	mInput = po::phidget::VoltageRatioInput::create( -1, 5, 10, 0.01 );
+	//mInput = po::phidget::VoltageRatioInput::create( -1, 5, 10, 0.01 );
+	mInput = po::phidget::VoltageRatioInput::create();
+	mInput->setProperties( -1, 5, 10, 0.01 );
+	mInput->createAndOpenChannel();
 }
 
 void BasicVoltageRatioApp::mouseDown( MouseEvent event )

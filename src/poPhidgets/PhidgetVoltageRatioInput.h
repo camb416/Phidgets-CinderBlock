@@ -15,6 +15,8 @@ Adapted from example available here: https://www.phidgets.com/?view=code_samples
 #include <phidget22.h>
 #include <memory>
 
+#include "poPhidgets/PhidgetBaseInput.h"
+
 #pragma clang diagnostic pop
 
 namespace po
@@ -35,36 +37,39 @@ namespace po
 		};
 
 		class VoltageRatioInput
-			: public std::enable_shared_from_this<VoltageRatioInput>
+			: public po::phidget::BaseInput
 		{
 			public:
 				static VoltageRatioInputRef create();
-				static VoltageRatioInputRef create( int serialNum, int channelNum, int dataInterval, double changeTrigger );
+				//static VoltageRatioInputRef create( int serialNum, int channelNum, int dataInterval, double changeTrigger );
+				void setProperties( int serialNum, int channelNum, int dataInterval, double changeTrigger );
 
 				void setDelegate( VoltageRatioInputDelegateRef delegate ) { mDelegate = delegate; };
 
 				double getSensorVal();
+
+				PhidgetHandle getHandle() override { return ( PhidgetHandle ) mHandle; };
 				~VoltageRatioInput();
 
 			protected:
 				VoltageRatioInput();
-				void setup( int serialNum = -1, int channelNum = 0, int dataInterval = 100, double changeTrigger = 0.05 );
+				//void setup( int serialNum = -1, int channelNum = 0, int dataInterval = 100, double changeTrigger = 0.05 );
 
 			private:
 				PhidgetVoltageRatioInputHandle mHandle = NULL;
 
+				int createSpecificInput();
+
 				//	called during setup
 				static int createVoltageRatioInput( PhidgetVoltageRatioInputHandle* pvrih );
-				int setSerialNumber( PhidgetHandle ph, int deviceSerialNumber = -1 );
-				int setChannel( PhidgetHandle ph, int channel = 0 );
 
+				//	properties specific to this type of input
 				uint32_t mDataInterval;
 				double mChangeTrigger;
 
-				int setAttachDetachError_Handlers( PhidgetHandle ch );
+				int setAttachDetachErrorHandlers( PhidgetHandle ch ) override;
+				void setChangeHandlers( PhidgetHandle ch ) override;
 				int setVoltageRatioHandler( PhidgetVoltageRatioInputHandle pvrih, PhidgetVoltageRatioInput_OnVoltageRatioChangeCallback fptr );
-				int openPhidgetChannelWithTimeout( PhidgetHandle ch, int timeout = 5000 );
-				int closePhidgetChannel( PhidgetHandle ch );
 
 				//	event handlers
 				static void CCONV onAttachHandler( PhidgetHandle ph, void* ctx );
@@ -73,7 +78,7 @@ namespace po
 				static void CCONV onVoltageRatioChangeHandler( PhidgetVoltageRatioInputHandle pvrih, void* ctx, double ratio );
 
 				//	error display
-				static void displayError( PhidgetReturnCode code );
+				//static void displayError( PhidgetReturnCode code );
 
 				//  communication
 				VoltageRatioInputDelegateRef mDelegate;

@@ -1,6 +1,7 @@
 #include "PhidgetVoltageRatioInput.h"
 #include "cinder/Log.h"
 #include "cinder/app/App.h"
+#include <iostream>
 
 namespace po
 {
@@ -11,29 +12,41 @@ namespace po
 		//
 		VoltageRatioInputRef VoltageRatioInput::create()
 		{
-			VoltageRatioInputRef ref( new VoltageRatioInput() );
-			ref->setup( -1, 0 , 100, 0.05);
-			return ref;
+			return VoltageRatioInputRef( new VoltageRatioInput() );
+			//ref->setup( -1, 0, 100, 0.05 );
+			//return ref;
 		}
 
 		//
-        //	Create and specify the following:
-        //  Serial number: set to -1 to read from device
-        //  Channel number
-        //  Data interval: The frequency, in milliseconds, the device checks the value
-        //  Change trigger: amount of change that will trigger an event; set to 0 to trigger event every interval
+		//	Create and specify the following:
+		//  Serial number: set to -1 to read from device
+		//  Channel number
+		//  Data interval: The frequency, in milliseconds, the device checks the value
+		//  Change trigger: amount of change that will trigger an event; set to 0 to trigger event every interval
 		//
-		VoltageRatioInputRef VoltageRatioInput::create( int serialNum, int channelNum, int dataInterval, double changeTrigger )
-		{
-			VoltageRatioInputRef ref( new VoltageRatioInput() );
-			ref->setup( serialNum, channelNum, dataInterval, changeTrigger );
-			return ref;
-		}
+		//VoltageRatioInputRef VoltageRatioInput::create( int serialNum, int channelNum, int dataInterval, double changeTrigger )
+		//{
+		//	VoltageRatioInputRef ref( new VoltageRatioInput() );
+		//	ref->setup( serialNum, channelNum, dataInterval, changeTrigger );
+		//	return ref;
+		//}
 
 		VoltageRatioInput::VoltageRatioInput()
-            : mDataInterval(100)
-            , mChangeTrigger(0.05)
+			: mDataInterval( 100 )
+			, mChangeTrigger( 0.05 )
 		{}
+
+		//
+		//	set the desired properties of the input
+		//
+		void VoltageRatioInput::setProperties( int serialNum, int channelNum, int dataInterval, double changeTrigger )
+		{
+			mSerialNumber = serialNum;
+			mChannel = channelNum;
+			mDataInterval = dataInterval;
+			mChangeTrigger = changeTrigger;
+		}
+
 
 		//
 		//	close channel on destroy
@@ -50,6 +63,34 @@ namespace po
 				CI_LOG_V( "Handle was null; methods in destructor skipped" );
 			}
 		}
+
+		//
+		//	Called by base function;
+		//	creates voltage ratio input
+		//
+		int VoltageRatioInput::createSpecificInput()
+		{
+
+			if( createVoltageRatioInput( &mHandle ) ) {
+				return 1;
+			}
+			else {
+				return 0;
+			}
+		}
+
+		//
+		//	Called by base function;
+		//	adds handler for voltage ratio change
+		//
+		void VoltageRatioInput::setChangeHandlers( PhidgetHandle ph )
+		{
+			if( setVoltageRatioHandler( mHandle, onVoltageRatioChangeHandler ) ) {
+				return;
+			}
+		}
+
+
 
 		//
 		//	Public method;
@@ -74,36 +115,6 @@ namespace po
 			return voltageRatio;
 		}
 
-		void VoltageRatioInput::setup( int serialNum, int channelNum, int dataInterval, double changeTrigger )
-		{
-            mDataInterval = dataInterval;
-            mChangeTrigger = changeTrigger;
-            
-			if( createVoltageRatioInput( &mHandle ) ) {
-				return;
-			}
-
-			if( setSerialNumber( PhidgetHandle( mHandle ), serialNum ) ) {
-				return;
-			}
-
-			if( setChannel( PhidgetHandle( mHandle ), channelNum ) ) {
-				return;
-			}
-
-			if( setAttachDetachError_Handlers( PhidgetHandle( mHandle ) ) ) {
-				return;
-			}
-
-            if( setVoltageRatioHandler( mHandle, onVoltageRatioChangeHandler))  {
-                return;
-            }
-
-			if( openPhidgetChannelWithTimeout( PhidgetHandle( mHandle ), 5000 ) ) {
-				return;
-			}
-
-		}
 
 		/**
 		* Creates a new instance of a VoltageRatioInput channel.
@@ -126,45 +137,13 @@ namespace po
 			return 0;
 		}
 
-		//
-		//	Set serial number to
-		int VoltageRatioInput::setSerialNumber( PhidgetHandle ph, int deviceSerialNumber )
-		{
-			CI_LOG_V( "Setting Phidget serial number to " << deviceSerialNumber );
-			PhidgetReturnCode prc;
-			prc = Phidget_setDeviceSerialNumber( ph, deviceSerialNumber );
-
-			if( EPHIDGET_OK != prc ) {
-				CI_LOG_E( "Runtime Error -> Setting DeviceSerialNumber" );
-				displayError( prc );
-				return 1;
-			}
-
-			return 0;
-		}
-
-		int VoltageRatioInput::setChannel( PhidgetHandle ph, int channel )
-		{
-			CI_LOG_V( "Setting channel to " << channel );
-			PhidgetReturnCode prc;
-			prc = Phidget_setChannel( ph, channel );
-
-			if( EPHIDGET_OK != prc ) {
-				CI_LOG_E( "Runtime Error -> Setting Channel: \n\t" );
-				displayError( prc );
-				return 1;
-			}
-
-			return 0;
-		}
-
 		/**
 		* Sets the event handlers for Phidget Attach, Phidget Detach, Phidget Error events
 		*
 		* @param ph The Phidget channel to add event handlers to
 		* @return 0 if the operation succeeds, 1 if it fails
 		*/
-		int VoltageRatioInput::setAttachDetachError_Handlers( PhidgetHandle ch )
+		int VoltageRatioInput::setAttachDetachErrorHandlers( PhidgetHandle ch )
 		{
 			PhidgetReturnCode prc;
 			CI_LOG_V( "Setting OnAttachHandler..." );
@@ -197,6 +176,8 @@ namespace po
 			return 0;
 		}
 
+
+
 		/**
 		* Sets the event handler for VoltageRatioInput's VoltageRatioChange event
 		*
@@ -219,37 +200,6 @@ namespace po
 			return 0;
 		}
 
-        int VoltageRatioInput::openPhidgetChannelWithTimeout( PhidgetHandle ch, int timeout )
-		{
-			PhidgetReturnCode prc;
-
-			CI_LOG_V( "Opening Channel..." );
-			prc = Phidget_openWaitForAttachment( ch, timeout );
-
-			if( prc != EPHIDGET_OK ) {
-				CI_LOG_E( "Runtime Error -> Opening Phidget Channel" );
-				displayError( prc );
-				return 1;
-			}
-
-			return 0;
-		}
-
-		int VoltageRatioInput::closePhidgetChannel( PhidgetHandle ch )
-		{
-			PhidgetReturnCode prc;
-
-			CI_LOG_V( "Closing Channel..." );
-			prc = Phidget_close( ch );
-
-			if( prc != EPHIDGET_OK ) {
-				CI_LOG_E( "Runtime Error -> Closing Phidget Channel" );
-				displayError( prc );
-				return 1;
-			}
-
-			return 0;
-		}
 
 		/**
 		* Configures the device's DataInterval and ChangeTrigger.
@@ -261,7 +211,7 @@ namespace po
 		*/
 		void CCONV VoltageRatioInput::onAttachHandler( PhidgetHandle ph, void* ctx )
 		{
-            VoltageRatioInput* voltageRatioInstance = (VoltageRatioInput*)ctx;
+			VoltageRatioInput* voltageRatioInstance = ( VoltageRatioInput* )ctx;
 
 			CI_LOG_V( "onAttachHandler" );
 			PhidgetReturnCode prc;
@@ -270,12 +220,12 @@ namespace po
 			int32_t hubPort;
 			int32_t channel;
 
-            /*
-             *    Set the DataInterval inside of the attach handler to initialize the device with this value.
-             *    DataInterval defines the minimum time between VoltageRatioChange events.
-             *    DataInterval can be set to any value from MinDataInterval to MaxDataInterval.
-             */
-            
+			/*
+			 *    Set the DataInterval inside of the attach handler to initialize the device with this value.
+			 *    DataInterval defines the minimum time between VoltageRatioChange events.
+			 *    DataInterval can be set to any value from MinDataInterval to MaxDataInterval.
+			 */
+
 			//	Find max and min data intervals
 
 			uint32_t minDataInterval;
@@ -298,12 +248,12 @@ namespace po
 			}
 
 			CI_LOG_D( "Max and min data intervals (in milliseconds)\t Max: " << maxDataInterval << ", min: " << minDataInterval );
-            
-            if (voltageRatioInstance->mDataInterval > maxDataInterval || voltageRatioInstance->mDataInterval < minDataInterval) {
-                CI_LOG_W("Setting data interval to value outside max and min limits.");
-            }
 
-            //  Set the actual data interval
+			if( voltageRatioInstance->mDataInterval > maxDataInterval || voltageRatioInstance->mDataInterval < minDataInterval ) {
+				CI_LOG_W( "Setting data interval to value outside max and min limits." );
+			}
+
+			//  Set the actual data interval
 			prc = PhidgetVoltageRatioInput_setDataInterval( ( PhidgetVoltageRatioInputHandle )ph, voltageRatioInstance->mDataInterval );
 
 			if( EPHIDGET_OK != prc ) {
@@ -317,33 +267,35 @@ namespace po
 			*	VoltageRatioChangeTrigger will affect the frequency of VoltageRatioChange events, by limiting them to only occur when
 			*	the ratio changes by at least the value set.
 			*/
-            
-            //  find min and max change trigger
-            
-            double minChangeTrigger;
-            double maxChangeTrigger;
-            
-            prc = PhidgetVoltageRatioInput_getMinVoltageRatioChangeTrigger( ( PhidgetVoltageRatioInputHandle )ph, &minChangeTrigger );
-            
-            if( EPHIDGET_OK != prc ) {
-                CI_LOG_E( "Runtime Error -> Getting min change trigger" );
-                displayError( prc );
-                return;
-            }
-            
-            prc = PhidgetVoltageRatioInput_getMaxVoltageRatioChangeTrigger( ( PhidgetVoltageRatioInputHandle )ph, &maxChangeTrigger );
-            
-            if( EPHIDGET_OK != prc ) {
-                CI_LOG_E( "Runtime Error -> Getting max change trigger" );
-                displayError( prc );
-                return;
-            }
-            
-            CI_LOG_D( "Max and min voltage ratio change triggers\t Max: " << maxChangeTrigger << ", min: " << minChangeTrigger );
-            CI_LOG_V("Setting change trigger to " << voltageRatioInstance->mChangeTrigger);
-            if (voltageRatioInstance->mChangeTrigger > maxChangeTrigger || voltageRatioInstance->mChangeTrigger < minChangeTrigger) {
-                CI_LOG_W("Setting change trigger to value outside the max and min limits.");
-            }
+
+			//  find min and max change trigger
+
+			double minChangeTrigger;
+			double maxChangeTrigger;
+
+			prc = PhidgetVoltageRatioInput_getMinVoltageRatioChangeTrigger( ( PhidgetVoltageRatioInputHandle )ph, &minChangeTrigger );
+
+			if( EPHIDGET_OK != prc ) {
+				CI_LOG_E( "Runtime Error -> Getting min change trigger" );
+				displayError( prc );
+				return;
+			}
+
+			prc = PhidgetVoltageRatioInput_getMaxVoltageRatioChangeTrigger( ( PhidgetVoltageRatioInputHandle )ph, &maxChangeTrigger );
+
+			if( EPHIDGET_OK != prc ) {
+				CI_LOG_E( "Runtime Error -> Getting max change trigger" );
+				displayError( prc );
+				return;
+			}
+
+			CI_LOG_D( "Max and min voltage ratio change triggers\t Max: " << maxChangeTrigger << ", min: " << minChangeTrigger );
+			CI_LOG_V( "Setting change trigger to " << voltageRatioInstance->mChangeTrigger );
+
+			if( voltageRatioInstance->mChangeTrigger > maxChangeTrigger || voltageRatioInstance->mChangeTrigger < minChangeTrigger ) {
+				CI_LOG_W( "Setting change trigger to value outside the max and min limits." );
+			}
+
 			prc = PhidgetVoltageRatioInput_setVoltageRatioChangeTrigger( ( PhidgetVoltageRatioInputHandle )ph, voltageRatioInstance->mChangeTrigger );
 
 			if( EPHIDGET_OK != prc ) {
@@ -465,44 +417,28 @@ namespace po
 		* @param *ctx Context pointer
 		* @param ratio The reported voltage ratio from the VoltageRatioInput channel
 		*/
-        void CCONV VoltageRatioInput::onVoltageRatioChangeHandler( PhidgetVoltageRatioInputHandle pvrih, void* ctx, double ratio )
+		void CCONV VoltageRatioInput::onVoltageRatioChangeHandler( PhidgetVoltageRatioInputHandle pvrih, void* ctx, double ratio )
 		{
 			CI_LOG_V( "[VoltageRatio Event] -> Ratio: " << ratio );
-            VoltageRatioInput* voltageRatioInstance = (VoltageRatioInput*)ctx;
-            if (!voltageRatioInstance->mDelegate.expired()) {
-                voltageRatioInstance->mDelegate.lock()->voltageRatioValueChanged(ratio);
-            } else {
-                CI_LOG_V("delegate expired");
-            }
-            voltageRatioInstance->testCallbackFunction(ratio);
-		}
+			VoltageRatioInput* voltageRatioInstance = ( VoltageRatioInput* )ctx;
 
-		//
-		//	Display Error messages
-		//
-		void VoltageRatioInput::displayError( PhidgetReturnCode code )
-		{
-			PhidgetReturnCode prc;
-			const char* error;
-
-			prc = Phidget_getErrorDescription( code, &error );
-
-			if( EPHIDGET_OK != prc ) {
-				CI_LOG_E( "Runtime Error -> Getting ErrorDescription: \n\t" );
-				//displayError( prc );
-				return;
+			if( !voltageRatioInstance->mDelegate.expired() ) {
+				voltageRatioInstance->mDelegate.lock()->voltageRatioValueChanged( ratio );
+			}
+			else {
+				CI_LOG_V( "delegate expired" );
 			}
 
-			CI_LOG_E( "Error desc: " << error );
-
+			voltageRatioInstance->testCallbackFunction( ratio );
 		}
-        
-        //
-        //  test
-        //
-        void VoltageRatioInput::testCallbackFunction(double test)
-        {
-            CI_LOG_D("Non-static callback function value: " << test);
-        }
+
+
+		//
+		//  test
+		//
+		void VoltageRatioInput::testCallbackFunction( double test )
+		{
+			CI_LOG_D( "Non-static callback function value: " << test );
+		}
 	}
 }
