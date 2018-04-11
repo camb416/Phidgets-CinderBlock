@@ -19,6 +19,8 @@
 		2047C30612B54B918998772C /* CinderApp.icns in Resources */ = {isa = PBXBuildFile; fileRef = 00B5275FF1B94FF4A07F9D7E /* CinderApp.icns */; };
 		21A73C3B20756ED700CC25AA /* PhidgetVoltageRatioInput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 21A73C1920756ED700CC25AA /* PhidgetVoltageRatioInput.cpp */; };
 		21A73C3D207570F200CC25AA /* Phidget22.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21A73C3C207570F200CC25AA /* Phidget22.framework */; };
+		21EF1C7F207E60FA000C6723 /* PhidgetBaseInput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 21EF1C7D207E60FA000C6723 /* PhidgetBaseInput.cpp */; };
+		21EF1C80207E60FA000C6723 /* PhidgetDistanceSensor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 21EF1C7E207E60FA000C6723 /* PhidgetDistanceSensor.cpp */; };
 		5323E6B20EAFCA74003A9687 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B10EAFCA74003A9687 /* CoreVideo.framework */; };
 		60150FFEE1D0430CBA77835B /* BasicVoltageRatioApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DE439C9DB59F4AA8ACA8D469 /* BasicVoltageRatioApp.cpp */; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
@@ -41,6 +43,10 @@
 		21A73C1920756ED700CC25AA /* PhidgetVoltageRatioInput.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PhidgetVoltageRatioInput.cpp; sourceTree = "<group>"; };
 		21A73C1A20756ED700CC25AA /* PhidgetVoltageRatioInput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhidgetVoltageRatioInput.h; sourceTree = "<group>"; };
 		21A73C3C207570F200CC25AA /* Phidget22.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Phidget22.framework; path = ../../../../../../../../../Library/Frameworks/Phidget22.framework; sourceTree = "<group>"; };
+		21EF1C7B207E60FA000C6723 /* PhidgetBaseInput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhidgetBaseInput.h; sourceTree = "<group>"; };
+		21EF1C7C207E60FA000C6723 /* PhidgetDistanceSensor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhidgetDistanceSensor.h; sourceTree = "<group>"; };
+		21EF1C7D207E60FA000C6723 /* PhidgetBaseInput.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PhidgetBaseInput.cpp; sourceTree = "<group>"; };
+		21EF1C7E207E60FA000C6723 /* PhidgetDistanceSensor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PhidgetDistanceSensor.cpp; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		50229C8FDCA64AA58BADCEFD /* BasicVoltageRatio_Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = "\"\""; path = BasicVoltageRatio_Prefix.pch; sourceTree = "<group>"; };
@@ -153,6 +159,10 @@
 		21A73C1820756ED700CC25AA /* poPhidgets */ = {
 			isa = PBXGroup;
 			children = (
+				21EF1C7D207E60FA000C6723 /* PhidgetBaseInput.cpp */,
+				21EF1C7B207E60FA000C6723 /* PhidgetBaseInput.h */,
+				21EF1C7E207E60FA000C6723 /* PhidgetDistanceSensor.cpp */,
+				21EF1C7C207E60FA000C6723 /* PhidgetDistanceSensor.h */,
 				21A73C1920756ED700CC25AA /* PhidgetVoltageRatioInput.cpp */,
 				21A73C1A20756ED700CC25AA /* PhidgetVoltageRatioInput.h */,
 			);
@@ -263,7 +273,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				21EF1C80207E60FA000C6723 /* PhidgetDistanceSensor.cpp in Sources */,
 				60150FFEE1D0430CBA77835B /* BasicVoltageRatioApp.cpp in Sources */,
+				21EF1C7F207E60FA000C6723 /* PhidgetBaseInput.cpp in Sources */,
 				21A73C3B20756ED700CC25AA /* PhidgetVoltageRatioInput.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
