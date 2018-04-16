@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<cinder>
+	<block
+		name="poPhidgets"
+		id="com.potiondesign.poPhidgets"
+		author="Potion"
+		license="modbsd"
+		git="git@github.com:Potion/Cinder-poPhidgets.git"
+		summary="Block for using certain Phidgets sensors"
+		core="false"
+		library="https://www.phidgets.com/docs/Software_Overview#Language_Support">
+
+		<supports os="macosx" />
+		<supports os="msw" />
+		
+		<platform os="macosx">
+			<includePath>src</includePath>
+			<framework>Phidget22.framework</framework>
+		</platform>
+
+		<platform os="msw">
+			<includePath>src</includePath>
+			<libraryPath></libraryPath>
+			<staticLibrary></staticLibrary>
+		</platform>
+
+		<headerPattern>
+			src/poPhidgets/*.h
+		</headerPattern>
+		<sourcePattern>
+			src/poPhidgets/*.cpp
+		</sourcePattern>
+
+	</block>
+</cinder>

@@ -82,7 +82,8 @@ namespace po
 		//
 		//	Public method;
 		//	Returns last reported voltage ratio value from channel
-		double VoltageRatioInput::getSensorVal()
+        //
+		double VoltageRatioInput::getVoltageRatio()
 		{
 			if( mHandle == NULL ) {
 				CI_LOG_W( "VoltageRatioInput handle does not exist" );
@@ -101,6 +102,31 @@ namespace po
 
 			return voltageRatio;
 		}
+        
+        //
+        //  Public method;
+        //  Returns last reported sensor value appropriate for the sensor
+        //
+        double VoltageRatioInput::getSensorValue() {
+            CI_LOG_V("placeholder");
+            if( mHandle == NULL ) {
+                CI_LOG_W( "VoltageRatioInput handle does not exist" );
+                return 0.0;
+            }
+            
+            PhidgetReturnCode prc;
+            double sensorValue;
+            prc = PhidgetVoltageRatioInput_getSensorValue( mHandle, &sensorValue );
+            
+            if( EPHIDGET_OK != prc ) {
+                CI_LOG_E( "Runtime Error -> Getting sensor value:" );
+                displayError( prc );
+                return 1;
+            }
+            
+            return sensorValue;
+        }
+
 
 
 		/**
@@ -112,7 +138,7 @@ namespace po
 		int VoltageRatioInput::createVoltageRatioInput( PhidgetVoltageRatioInputHandle* pvrih )
 		{
 			PhidgetReturnCode prc;
-			CI_LOG_V( "Creating VoltageRatioInput Channel..." );
+//            CI_LOG_V( "Creating VoltageRatioInput Channel..." );
 			prc = PhidgetVoltageRatioInput_create( pvrih );
 
 			if( EPHIDGET_OK != prc ) {
@@ -133,7 +159,7 @@ namespace po
 		int VoltageRatioInput::setAttachDetachErrorHandlers( PhidgetHandle ch )
 		{
 			PhidgetReturnCode prc;
-			CI_LOG_V( "Setting OnAttachHandler..." );
+//            CI_LOG_V( "Setting OnAttachHandler..." );
 			prc = Phidget_setOnAttachHandler( ch, onAttachHandler, this );
 
 			if( EPHIDGET_OK != prc ) {
@@ -142,7 +168,7 @@ namespace po
 				return 1;
 			}
 
-			CI_LOG_V( "Setting OnDetachHandler..." );
+//            CI_LOG_V( "Setting OnDetachHandler..." );
 			prc = Phidget_setOnDetachHandler( ch, onDetachHandler, NULL );
 
 			if( EPHIDGET_OK != prc ) {
@@ -151,7 +177,7 @@ namespace po
 				return 1;
 			}
 
-			CI_LOG_V( "Setting OnErrorHandler..." );
+//            CI_LOG_V( "Setting OnErrorHandler..." );
 			prc = Phidget_setOnErrorHandler( ch, onErrorHandler, NULL );
 
 			if( EPHIDGET_OK != prc ) {
@@ -175,7 +201,7 @@ namespace po
 		int VoltageRatioInput::setVoltageRatioHandler( PhidgetVoltageRatioInputHandle pvrih, PhidgetVoltageRatioInput_OnVoltageRatioChangeCallback fptr )
 		{
 			PhidgetReturnCode prc;
-			CI_LOG_V( "Setting voltage ratio handler" );
+//            CI_LOG_V( "Setting voltage ratio handler" );
 			prc = PhidgetVoltageRatioInput_setOnVoltageRatioChangeHandler( pvrih, fptr, this );
 
 			if( EPHIDGET_OK != prc ) {
@@ -406,14 +432,14 @@ namespace po
 		*/
 		void CCONV VoltageRatioInput::onVoltageRatioChangeHandler( PhidgetVoltageRatioInputHandle pvrih, void* ctx, double ratio )
 		{
-			CI_LOG_V( "[VoltageRatio Event] -> Ratio: " << ratio );
+//            CI_LOG_V( "[VoltageRatio Event] -> Ratio: " << ratio );
 			VoltageRatioInput* voltageRatioInstance = ( VoltageRatioInput* )ctx;
 
 			if( !voltageRatioInstance->mDelegate.expired() ) {
 				voltageRatioInstance->mDelegate.lock()->voltageRatioValueChanged( ratio );
 			}
 			else {
-				CI_LOG_V( "delegate expired" );
+//                CI_LOG_V( "delegate expired" );
 			}
 
 			voltageRatioInstance->testCallbackFunction( ratio );
@@ -425,7 +451,8 @@ namespace po
 		//
 		void VoltageRatioInput::testCallbackFunction( double test )
 		{
-			CI_LOG_D( "Non-static callback function value: " << test );
+            CI_LOG_D( "Non-static callback function value: " << test );
 		}
 	}
 }
+

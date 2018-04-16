@@ -42,7 +42,8 @@ namespace po
 				static VoltageRatioInputRef create();
 				void setProperties( int serialNum, int channelNum, int dataInterval, double changeTrigger );
 				void setDelegate( VoltageRatioInputDelegateRef delegate ) { mDelegate = delegate; };
-				double getSensorVal();
+				double getVoltageRatio();
+                double getSensorValue();
 
 				PhidgetHandle getHandle() override { return ( PhidgetHandle ) mHandle; };
 				~VoltageRatioInput();

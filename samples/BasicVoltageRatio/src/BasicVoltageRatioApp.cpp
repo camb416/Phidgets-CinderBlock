@@ -6,7 +6,6 @@
 #include "poPhidgets/PhidgetVoltageRatioInput.h"
 #include "poPhidgets/PhidgetDistanceSensor.h"
 
-#define CI_MIN_LOG_LEVEL 4
 #include "cinder/Log.h"
 
 
@@ -33,19 +32,22 @@ class BasicVoltageRatioApp
 
 void BasicVoltageRatioApp::setup()
 {
-	//mInput = po::phidget::VoltageRatioInput::create();
-	//mInput->setProperties( -1, 5, 10, 0.01 );
-	//mInput->createAndOpenChannel();
+    mInput = po::phidget::VoltageRatioInput::create();
+    mInput->setProperties( -1, 5, 10, 0.01 );
+    mInput->createAndOpenChannel();
 
-	mDistanceInput = po::phidget::DistanceSensor::create();
-	mDistanceInput->setProperties( -1, 5 );
-	mDistanceInput->createAndOpenChannel();
+//    mDistanceInput = po::phidget::DistanceSensor::create();
+//    mDistanceInput->setProperties( -1, 5 );
+//    mDistanceInput->createAndOpenChannel();
 }
 
 void BasicVoltageRatioApp::mouseDown( MouseEvent event )
 {
-	double sensorVal = mInput->getSensorVal();
-	CI_LOG_V( "Calling getSensorValue on VoltageRatioInput: " << sensorVal );
+	double voltageRatio = mInput->getVoltageRatio();
+	CI_LOG_V( "Calling getVoltageRatio on VoltageRatioInput: " << voltageRatio );
+    
+    double sensorVal = mInput->getSensorValue();
+    CI_LOG_V( "Calling getSensorValue on VoltageRatioInput: " << sensorVal );
 }
 
 void BasicVoltageRatioApp::keyDown( KeyEvent event )
